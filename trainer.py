@@ -1,9 +1,7 @@
 import os
 import torch
 from tqdm import tqdm
-import torch.nn.functional as F
 import sklearn
-from sklearn.mixture import GaussianMixture
 import utils
 import numpy as np
 
@@ -60,7 +58,7 @@ class Trainer:
                 x_wavs = x_wavs.unsqueeze(1)
 
                 # svdd_loss = self.net.compute_oneclass_loss(x_mels, labels)  # 单分类超球面损失
-                #svdd_loss = self.net.compute_loss(x_mels,x_wavs,labels) # 多分类超球面损失， 根据对应的标签计算对应的超球面损失
+                # svdd_loss = self.net.compute_loss(x_mels,x_wavs,labels) # 多分类超球面损失， 根据对应的标签计算对应的超球面损失
                 
                 svdd_loss,_ = self.net.compute_soft_svdd_loss(x_mels,x_wavs,labels) # 软边界多分类超球面损失
                 #classfication_loss,_ = self.net.compute_classification_loss(x_mels,x_wavs,labels) # 根据对应的标签计算对应的分类损失
@@ -190,14 +188,14 @@ class Trainer:
             # calculate averages for AUCs and pAUCs
             averaged_performance = np.mean(np.array(performance, dtype=float), axis=0)
             mean_auc, mean_p_auc = averaged_performance[0], averaged_performance[1]
-            self.logger.info(f'{machine_type}\t\tAUC: {mean_auc*100:.3f}\tpAUC: {mean_p_auc*100:.3f}')
+            print(f'{machine_type}\t\tAUC: {mean_auc*100:.3f}\tpAUC: {mean_p_auc*100:.3f}')
             csv_lines.append(['Average'] + list(averaged_performance))
             sum_auc += mean_auc
             sum_pauc += mean_p_auc
             num += 1
         avg_auc, avg_pauc = sum_auc / num, sum_pauc / num
         csv_lines.append(['Total Average', avg_auc, avg_pauc])
-        self.logger.info(f'Total average:\t\tAUC: {avg_auc*100:.3f}\tpAUC: {avg_pauc*100:.3f}')
+        print(f'Total average:\t\tAUC: {avg_auc*100:.3f}\tpAUC: {avg_pauc*100:.3f}')
         result_path = os.path.join(result_dir, 'result.csv')
         if save:
             utils.save_csv(result_path, csv_lines)

@@ -14,32 +14,32 @@ pass_dirs:
 # filepath
 train_dirs:
   - ../data/dataset/fan/train
-  #- ../data/dataset/pump/train
-  #- ../data/dataset/slider/train
-  #- ../data/dataset/valve/train
-  #- ../data/dataset/ToyCar/train
-  #- ../data/dataset/ToyConveyor/train
+  - ../data/dataset/pump/train
+  - ../data/dataset/slider/train
+  - ../data/dataset/valve/train
+  - ../data/dataset/ToyCar/train
+  - ../data/dataset/ToyConveyor/train
 add_dirs:
   - ../data/eval_dataset/fan/train
-  #- ../data/eval_dataset/pump/train
-  #- ../data/eval_dataset/slider/train
-  #- ../data/eval_dataset/valve/train
-  #- ../data/eval_dataset/ToyCar/train
-  #- ../data/eval_dataset/ToyConveyor/train
+  - ../data/eval_dataset/pump/train
+  - ../data/eval_dataset/slider/train
+  - ../data/eval_dataset/valve/train
+  - ../data/eval_dataset/ToyCar/train
+  - ../data/eval_dataset/ToyConveyor/train
 valid_dirs:
   - ../data/dataset/fan/test
-  #- ../data/dataset/pump/test
-  #- ../data/dataset/slider/test
-  #- ../data/dataset/valve/test
-  #- ../data/dataset/ToyCar/test
-  #- ../data/dataset/ToyConveyor/test
+  - ../data/dataset/pump/test
+  - ../data/dataset/slider/test
+  - ../data/dataset/valve/test
+  - ../data/dataset/ToyCar/test
+  - ../data/dataset/ToyConveyor/test
 test_dirs:
   - ../data/dataset/fan/test
-  #- ../data/dataset/pump/test
-  #- ../data/dataset/slider/test
-  #- ../data/dataset/valve/test
-  #- ../data/dataset/ToyCar/test
-  #- ../data/dataset/ToyConveyor/test
+  - ../data/dataset/pump/test
+  - ../data/dataset/slider/test
+  - ../data/dataset/valve/test
+  - ../data/dataset/ToyCar/test
+  - ../data/dataset/ToyConveyor/test
 
 result_dir: ./results
 # audio preprocess
@@ -69,16 +69,6 @@ start_valid_epoch: 0
 warm_up: 1 # warm up epochs for training with machine ID
 
 
-# loss
-use_arcface: True
-m: 0.7
-s: 30
-sub_center: 1
-
-# anomaly score
-gmm_n: False # if set as a int value, use gmm to fit feature for each ID and estimate anomaly score
-
-
 # test
 load_epoch: best # it will test your model if set a value, e.g. best, 10, 100
 
@@ -88,6 +78,3 @@ noise_prob: 0.3 # add noise probability
 noise_snr_min_db: 15.0
 noise_snr_max_db: 30.0
 
-mixup_enable: True
-mixup_alpha: 0.4
-mixup_prob: 0.3
