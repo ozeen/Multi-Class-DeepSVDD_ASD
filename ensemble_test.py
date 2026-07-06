@@ -47,7 +47,7 @@ def main(args):
         if len(device_ids) > 1:
             args.dp = True
 
-    # ---------- 数据 & 标签映射 ----------
+
     train_dirs = args.train_dirs + args.add_dirs
     args.meta2label, args.label2meta = utils.metadata_to_label(train_dirs)
 
