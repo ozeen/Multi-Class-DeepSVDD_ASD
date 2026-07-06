@@ -68,7 +68,7 @@ class EnsembleTester:
                     label_tensor = torch.tensor([label_tmp]).long().to(self.args.device)
 
                     with torch.no_grad():
-                        # === 关键修改：对多个模型分别算分数，然后取平均 ===
+                        # === 对多个模型分别算分数，然后取平均 ===
                         svdd_scores = []
 
                         for net in base_nets:
