@@ -25,7 +25,7 @@ def build_model(args):
 
     net = net.to(args.device)
 
-    # 若你原来在别处加过 DataParallel，可以在这里一起处理
+
     if args.dp:
         net = nn.DataParallel(net, device_ids=args.device_ids)
 
@@ -47,7 +47,7 @@ def main(args):
         if len(device_ids) > 1:
             args.dp = True
 
-    # ---------- 数据 & 标签映射（只为 meta2label 和 transform） ----------
+    # ---------- 数据 & 标签映射 ----------
     train_dirs = args.train_dirs + args.add_dirs
     args.meta2label, args.label2meta = utils.metadata_to_label(train_dirs)
 
@@ -55,21 +55,18 @@ def main(args):
     for train_dir in train_dirs:
         train_file_list.extend(utils.get_filename_list(train_dir))
 
-    # 只用来拿 transform，不再创建 dataloader / 训练
     train_dataset = ASDDataset(args, train_file_list, load_in_memory=False)
 
     args.num_classes = len(args.meta2label.keys())
     args.logger.info(f"Num classes: {args.num_classes}")
 
-    # # ---------- 从目录中读取多个权重，构建 ensemble 模型列表 ----------
-    # if not hasattr(args, "weight_dir") or args.weight_dir is None:
-    #     raise ValueError("请在 config 中设置 weight_dir，用于存放多个模型权重文件。")
+
 
     #weight_dir = args.weight_dir
     if not os.path.isdir(args.ensemble_weight_dir):
         raise ValueError(f"权重目录不存在: {args.ensemble_weight_dir}")
 
-    # 只取常见的 checkpoint 后缀
+
     ckpt_files = [
         f for f in os.listdir(args.ensemble_weight_dir)
         if f.endswith(".pth") or f.endswith(".pth.tar")
@@ -86,7 +83,7 @@ def main(args):
         net = build_model(args)
         state = torch.load(ckpt_path, map_location=args.device)
 
-        # 兼容两种保存方式：{'model': state_dict} 或直接 state_dict
+
         if isinstance(state, dict) and "model" in state:
             net.load_state_dict(state["model"])
         else:
@@ -95,7 +92,7 @@ def main(args):
         nets.append(net)
         args.logger.info(f"Loaded checkpoint: {ckpt_path}")
 
-    # ---------- EnsembleTester：只做测试 ----------
+    # ---------- EnsembleTester ----------
     tester = EnsembleTester(
         args=args,
         nets=nets,
@@ -119,7 +116,7 @@ def run():
 
     args = parser.parse_args()
 
-    # init logger and writer（只是为了保持结构一致，方便看结果）
+    # init logger and writer
     time_str = time.strftime("%Y-%m-%d-%H", time.localtime(time.time()))
     args.version = f"{args.version}"
     args.version = (
