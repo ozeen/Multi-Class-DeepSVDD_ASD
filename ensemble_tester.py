@@ -36,7 +36,7 @@ class EnsembleTester:
         result_dir = os.path.join(self.args.result_dir, self.args.version)
         os.makedirs(result_dir, exist_ok=True)
 
-        # 所有模型设为 eval，并根据 dp 取出底层 net
+
         base_nets = []
         for net in self.nets:
             net.eval()
@@ -64,11 +64,11 @@ class EnsembleTester:
                     x_wav, x_mel, label_tmp = self.transform(file_path)
                     x_wav = x_wav.unsqueeze(0).float().to(self.args.device)
                     x_mel = x_mel.unsqueeze(0).float().to(self.args.device)
-                    # 这里 label 仍按原逻辑转换为 tensor
+
                     label_tensor = torch.tensor([label_tmp]).long().to(self.args.device)
 
                     with torch.no_grad():
-                        # === 对多个模型分别算分数，然后取平均 ===
+
                         svdd_scores = []
 
                         for net in base_nets:
@@ -79,12 +79,12 @@ class EnsembleTester:
                             )
                             svdd_scores.append(svdd_anomaly_score)
 
-                        # stack 后在模型维度求均值，得到 ensemble 分数
+
                         svdd_anomaly_score = torch.stack(svdd_scores, dim=0).mean(dim=0)
 
 
                     svdd_anomaly_score = svdd_anomaly_score.squeeze().cpu().numpy()
-                    # 仅用 ensemble 后的 SVDD 分数作为异常分数
+
                     y_pred[file_idx] = svdd_anomaly_score
                     anomaly_score_list.append([os.path.basename(file_path), y_pred[file_idx]])
 
