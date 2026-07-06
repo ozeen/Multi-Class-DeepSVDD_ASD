@@ -42,7 +42,7 @@ def save_csv(file_path, data: list):
         writer.writerows(data)
 
 
-# 复制目标文件到目标路径
+
 def copy_files(root_dir, target_dir, file_patterns, pass_dirs=['.git']):
     # print(root_dir, root_dir.split(sep), [name for name in root_dir.split(sep) if name != ''])
     os.makedirs(target_dir, exist_ok=True)
@@ -147,7 +147,7 @@ def metadata_to_label(data_dirs):
     label2meta = {}
     label = 0
 
-    # 逐类别去检索数据的元信息
+
     for data_dir in data_dirs:
         machine = data_dir.split('/')[-2]
         id_list = get_machine_id_list(data_dir)
