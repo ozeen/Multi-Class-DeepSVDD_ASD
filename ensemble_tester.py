@@ -17,7 +17,7 @@ class EnsembleTester:
             transform:  数据预处理/特征提取函数，与原代码一致
         """
         self.args = kwargs['args']
-        self.nets = kwargs['nets']          # <<< 新增：多个模型
+        self.nets = kwargs['nets']
         self.writer = self.args.writer
         self.logger = self.args.logger
         self.transform = kwargs['transform']
